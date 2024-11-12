@@ -1,0 +1,25 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ template "title" .}}</title>
+</head>
+<body>
+    <div>
+        <a href="/">RPS</a>
+    </div>
+    <nav>
+        <a href="/new">Nuevo</a>
+        <a href="/about">About</a>
+    </nav>
+
+    {{ template "content" .}}
+
+    <footer>
+        <p>Creado por Piero Abarca &copy; 2024</p>
+    </footer>
+</body>
+</html>
+{{end}}

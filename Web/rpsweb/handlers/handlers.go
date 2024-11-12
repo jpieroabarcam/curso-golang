@@ -2,19 +2,42 @@ package handlers
 
 import (
 	"fmt"
+	"html/template"
+	"log"
 	"net/http"
 )
 
+const (
+	templateDir  = "templates/"
+	templateBase = templateDir + "base.html"
+)
+
 func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Pagina de inicio")
+
+	renderTemplate(w, "index.html", nil)
+
+	//tpl, err := template.ParseFiles("templates/index.html", "templates/base.html")
+	// if err != nil {
+	// 	http.Error(w, "Error al analizar plantillas", http.StatusInternalServerError)
+	// }
+
+	// data := struct {
+	// 	Title   string
+	// 	Message string
+	// }{
+	// 	Title:   "Pagina de Inicio",
+	// 	Message: "¡Bienvenido a Piedra, Papel o Tijera!",
+	// }
+
+	//fmt.Fprintln(w, "Pagina de inicio")
 }
 
 func NewGame(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Crear nuevo juego")
+	renderTemplate(w, "new-game.html", nil)
 }
 
 func Game(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Juego")
+	renderTemplate(w, "game.html", nil)
 }
 
 func Play(w http.ResponseWriter, r *http.Request) {
@@ -22,5 +45,16 @@ func Play(w http.ResponseWriter, r *http.Request) {
 }
 
 func About(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Acerca de")
+	renderTemplate(w, "about.html", nil)
+}
+
+func renderTemplate(w http.ResponseWriter, page string, data any) {
+	tpl := template.Must(template.ParseFiles(templateBase, templateDir+page))
+
+	erro := tpl.ExecuteTemplate(w, "base", data)
+	if erro != nil {
+		http.Error(w, "Error al renderizar plantillas", http.StatusInternalServerError)
+		log.Println(erro)
+		return
+	}
 }
